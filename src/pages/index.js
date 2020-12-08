@@ -1,5 +1,6 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
@@ -26,10 +27,11 @@ const BlogIndex = ({ data, location }) => {
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
-      <Bio />
+      {/* <Bio /> */}
       <ol style={{ listStyle: `none` }}>
         {posts.map(post => {
           const title = post.frontmatter.title || post.fields.slug
+          console.log("cards", post.frontmatter.cards)
 
           return (
             <li key={post.fields.slug}>
@@ -38,22 +40,25 @@ const BlogIndex = ({ data, location }) => {
                 itemScope
                 itemType="http://schema.org/Article"
               >
-                <header>
-                  <h2>
-                    <Link to={post.fields.slug} itemProp="url">
-                      <span itemProp="headline">{title}</span>
-                    </Link>
-                  </h2>
-                  <small>{post.frontmatter.date}</small>
-                </header>
-                <section>
-                  <p
-                    dangerouslySetInnerHTML={{
-                      __html: post.frontmatter.description || post.excerpt,
+                <header style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h2
+                    style={{
+                      fontSize: 28,
+                      fontWeight: 600,
+                      lineHeight: 1.25,
+                      color: '#333333',
+                      maxWidth: 150,
                     }}
-                    itemProp="description"
-                  />
-                </section>
+                  >
+                    <span itemProp="headline">{title}</span>
+                  </h2>
+                  
+                  <h5 style={{ margin: 0 }}>
+                    <Link to={post.fields.slug} itemProp="url" style={{ color: '#8C5ACC' }}>
+                      View All <FaExternalLinkAlt />
+                    </Link>
+                  </h5>
+                </header>
               </article>
             </li>
           )
@@ -79,7 +84,6 @@ export const pageQuery = graphql`
           slug
         }
         frontmatter {
-          date(formatString: "MMMM DD, YYYY")
           title
           description
         }
